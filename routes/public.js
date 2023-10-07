@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const {check} = require('express-validator');
 // import middlewares
+const validateBody = require("../middlewares/express_validator/validateBody");
 
 // import controller
 const publicmainController = require("../controllers/public/index");
