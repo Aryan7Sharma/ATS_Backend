@@ -20,11 +20,11 @@ const superadminRoute = require("./routes/superadmin");
 const adminRoute = require("./routes/admin");
 const employeeRoute = require("./routes/employee");
 
-app.use('/api/auth',authRoute);
-app.use('/api/public',verifyUser, publicRoute);
-app.use('/api/superadmin', verifySuperAdmin, superadminRoute);
-app.use('/api/admin', verifyAdmin, adminRoute);
-app.use('/api/employee',verifyEmployee, employeeRoute);
+app.use('/ats/api/auth',authRoute);
+app.use('/ats/api/public',verifyUser, publicRoute);
+app.use('/ats/api/superadmin', verifySuperAdmin, superadminRoute);
+app.use('/ats/api/admin', verifyAdmin, adminRoute);
+app.use('/ats/api/employee',verifyEmployee, employeeRoute);
 
 
 
