@@ -26,7 +26,7 @@ app.use('/ats/api/superadmin', verifySuperAdmin, superadminRoute);
 app.use('/ats/api/admin', verifyAdmin, adminRoute);
 app.use('/ats/api/employee',verifyEmployee, employeeRoute);
 
-
+ 
 
 
 

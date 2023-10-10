@@ -24,7 +24,7 @@ const EmployeesAttendance = sequelize().define(
     },
     check_out_site_location_id: {
       type: DataTypes.INTEGER,
-      allowNull : false,
+      allowNull : true,
       references: {
         model: SitesLocationDetails,
         key: 'location_id',

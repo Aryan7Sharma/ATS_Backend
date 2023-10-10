@@ -194,3 +194,79 @@
 {"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-07T19:08:54.506Z"}
 {"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-07T21:59:59.147Z"}
 {"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-07T22:53:39.109Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T05:48:21.518Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T06:14:57.750Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T06:29:31.411Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T06:36:49.514Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T07:53:42.535Z"}
+{"level":"error","message":"server error inside getAllEmp controllerReferenceError: Sequelize is not defined","timestamp":"2023-10-09T07:53:45.701Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T07:55:58.655Z"}
+{"level":"error","message":"server error inside getAllEmp controllerReferenceError: Sequelize is not defined","timestamp":"2023-10-09T07:56:02.221Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T07:56:30.455Z"}
+{"level":"error","message":"server error inside getAllEmp controllerReferenceError: Sequelize is not defined","timestamp":"2023-10-09T07:56:33.416Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T07:57:20.589Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:10:31.359Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeDatabaseError: column \"emp_address\" does not exist","timestamp":"2023-10-09T11:13:12.981Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:13:37.741Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeDatabaseError: column \"emp_address\" does not exist","timestamp":"2023-10-09T11:13:43.791Z"}
+{"level":"error","message":"server error inside updateEmployee controller[object Object]","timestamp":"2023-10-09T11:14:31.237Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:15:12.960Z"}
+{"level":"error","message":"server error inside updateEmployee controller[object Object]","timestamp":"2023-10-09T11:15:17.355Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:17:12.885Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:23:03.521Z"}
+{"level":"error","message":"server error inside updateEmployee controller[object Object]","timestamp":"2023-10-09T11:24:04.768Z"}
+{"level":"error","message":"server error inside updateEmployee controller[object Object]","timestamp":"2023-10-09T11:30:01.488Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:38:29.698Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:43:09.850Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:47:50.354Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:52:11.447Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:52:37.089Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:53:03.555Z"}
+{"level":"error","message":"server error inside updateEmployee controller[object Object]","timestamp":"2023-10-09T11:54:34.713Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T11:56:24.491Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T12:00:06.645Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T12:14:58.639Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T12:18:19.445Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T12:32:37.594Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeValidationError: notNull Violation: tbl_employees_details.emp_address cannot be null","timestamp":"2023-10-09T12:43:27.563Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T12:51:37.592Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T12:53:51.363Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeValidationError: notNull Violation: tbl_employees_details.emp_address cannot be null","timestamp":"2023-10-09T12:55:10.108Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T12:57:45.974Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T13:05:48.872Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T17:44:24.218Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T17:50:11.787Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T17:51:30.797Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T17:51:58.734Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T17:54:15.681Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T17:55:48.999Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:49:37.062Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:50:00.046Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:50:40.901Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:53:02.148Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeValidationError: notNull Violation: tbl_employees_leaves.emp_id cannot be null,\nValidation error: Expected a string but received a Date","timestamp":"2023-10-09T18:53:07.191Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:53:57.496Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeValidationError: notNull Violation: tbl_employees_leaves.emp_id cannot be null,\nValidation error: Expected a string but received a Date","timestamp":"2023-10-09T18:54:10.631Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:54:50.210Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeValidationError: notNull Violation: tbl_employees_leaves.emp_id cannot be null,\nValidation error: Expected a string but received a Date","timestamp":"2023-10-09T18:54:57.997Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:55:52.465Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeValidationError: notNull Violation: tbl_employees_leaves.emp_id cannot be null,\nValidation error: Expected a string but received a Date","timestamp":"2023-10-09T18:55:55.534Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:56:57.995Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeValidationError: notNull Violation: tbl_employees_leaves.emp_id cannot be null","timestamp":"2023-10-09T18:57:01.463Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:58:28.461Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeValidationError: notNull Violation: tbl_employees_leaves.emp_id cannot be null","timestamp":"2023-10-09T18:58:31.003Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T18:58:47.033Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeDatabaseError: column \"createdAt\" of relation \"tbl_employees_leaves\" does not exist","timestamp":"2023-10-09T18:58:55.367Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T19:03:31.992Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeDatabaseError: column \"leave_id\" of relation \"tbl_employees_details\" does not exist","timestamp":"2023-10-09T19:03:40.759Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T19:05:57.803Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeDatabaseError: column \"leave_id\" of relation \"tbl_employees_details\" does not exist","timestamp":"2023-10-09T19:06:02.468Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T19:10:59.557Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeDatabaseError: column \"leave_id\" of relation \"tbl_employees_details\" does not exist","timestamp":"2023-10-09T19:11:03.527Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T19:18:37.263Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeDatabaseError: column \"leave_id\" of relation \"tbl_employees_details\" does not exist","timestamp":"2023-10-09T19:19:06.919Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T19:26:15.026Z"}
+{"level":"error","message":"server error inside markAbsence controllerSequelizeForeignKeyConstraintError: insert or update on table \"tbl_employee_leaves\" violates foreign key constraint \"tbl_employee_leaves_emp_id_fkey\"","timestamp":"2023-10-09T19:26:21.735Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T19:32:07.415Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T19:38:02.619Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-09T19:44:33.100Z"}

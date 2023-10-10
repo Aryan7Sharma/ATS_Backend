@@ -33,7 +33,7 @@ const EmployeesDetails = sequelize().define(
         key: 'department_id',
       },
     },
-    emp_adddress: {
+    emp_address: {
       type: DataTypes.STRING,
       allowNull: false,
     },

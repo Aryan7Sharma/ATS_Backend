@@ -26,7 +26,7 @@ router.get('/emplasttenAttendanceRecord',
     publicmainController.getEmpLastTenAttendanceRecord
 );
 
-router.get('/forgetpassword',
-    publicmainController.forgetPassword
-);
+router.get('/forgetpassword',publicmainController.forgetPassword);
+router.get("/getallsites",publicmainController.getAllSite);
+router.post("/markabsence",publicmainController.markAbsence);
 module.exports = router;
