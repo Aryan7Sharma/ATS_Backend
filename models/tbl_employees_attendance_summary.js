@@ -18,15 +18,15 @@ const EmployeeAttendanceSummary = sequelize().define('tbl_emp_attendance_summary
   },
   first_check_in: {
     type: DataTypes.DATE,
-    allowNull: true,
+    allowNull: false,
   },
   last_check_out: {
     type: DataTypes.DATE,
     allowNull: true, 
   },
-  total_working_minutes: {
-    type: DataTypes.INTEGER,
-    defaultValue:0
+  last_check_in: {
+    type: DataTypes.DATE,
+    allowNull: false,
   },
   total_minutes_on_site: {
     type: DataTypes.INTEGER, 

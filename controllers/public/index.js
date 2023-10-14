@@ -1,47 +1,59 @@
 const { env } = process;
 const { check } = require('express-validator');
 const logger = require('../../config/app_logger');
+const Sequelize = require('sequelize');
+const moment = require('moment-timezone');
+const date = new Date();
+const indianTimeDate = moment(date, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+const currentTimeUTC = new Date();
+// Adjust the time zone to IST (UTC+5:30)
+const currentTimeIST = new Date(currentTimeUTC.getTime() + 330 * 60 * 1000);
+
 // import models
-const { employeesModel, employeesattendanceModel, empLeavesModel, empAttenSummaryModel } = require('../../models/index');
+const { employeesModel, employeesattendanceModel, empLeavesModel, empAttenSummaryModel, siteslocationModel, departmentsModel } = require('../../models/index');
 // import common func
 const { generateNewPassword, hashPassword } = require("../../utils/index");
 const { sendNewPassword } = require("../../utils/sendMail");
 
 const checkIn = async (req, res) => {
     try {
+        const indianTimeDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
         const { site_location_id, location_distance_bykm } = req.body;
         const user_login = req.user;
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
-        const remark = location_distance_bykm > 1 ? 'PunchIn Distance is Greater Than 1Km.' : 'PunchIn Distance is Less Than 1Km.';
-        empAttendanceData = {
-            atten_date: new Date(),
+        const remark = location_distance_bykm > 1000 ? `PunchIn Distance is Greater Than 1000 Meter -- ${location_distance_bykm}.` : `PunchIn Distance is Less Than 1000 Meter -- ${location_distance_bykm}.`;
+        const empAttendanceData = {
+            atten_date: indianTimeDate,
             check_in_site_location_id: site_location_id,
             emp_id: employee.emp_id,
-            check_in: new Date(),
-            check_in_loc_dis_inkm: parseInt(location_distance_bykm),
-            remark: remark
+            check_in: indianTimeDate,
+            check_in_loc_dis_inmeter: parseInt(location_distance_bykm),
+            check_in_remark: remark
         }
         const checkInData = await employeesattendanceModel.create(empAttendanceData);
         if (!checkInData) { return res.status(424).json({ status: env.s424, msg: 'PunchIn Failed!, try again' }) };
         const empAttenSummary = await empAttenSummaryModel.findOne({
             where: {
-                atten_date: new Date(),
+                atten_date: indianTimeDate,
                 emp_id: employee.emp_id,
             }
         })
+        console.log("check emp atten summ", empAttenSummary);
+        console.log("before", new Date(), indianTimeDate);
         if (!empAttenSummary) {
-            const date = new Date();
             const empAttenSummaryData = {
-                atten_date: date,
+                atten_date: indianTimeDate,
                 emp_id: employee.emp_id,
-                first_check_in: date
+                first_check_in: indianTimeDate,
+                last_check_in: indianTimeDate
             }
             await empAttenSummaryModel.create(empAttenSummaryData);
         } else {
-            // empAttenSummary.total_working_minutes=1;
-            // empAttenSummary.total_minutes_on_site=1;
-            // await empAttenSummary.save();
+            console.log("before", new Date(), indianTimeDate, empAttenSummary.last_check_in)
+            empAttenSummary.last_check_in = indianTimeDate;
+            console.log("after", new Date(), indianTimeDate, empAttenSummary.last_check_in)
+            await empAttenSummary.save();
         }
         console.log('below');
         const respData = { attendanceId: checkInData.attendance_id, site_location_id: checkInData.site_location_id, punchInDateTime: checkInData.check_in }
@@ -54,20 +66,47 @@ const checkIn = async (req, res) => {
 
 const checkOut = async (req, res) => {
     try {
+        const indianTimeDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+        console.log("start", indianTimeDate);
         const { site_location_id, location_distance_bykm, attendance_id } = req.body;
         const user_login = req.user;
         const empAttendanceData = await employeesattendanceModel.findByPk(attendance_id);
         if (!empAttendanceData) { return res.status(404).json({ status: env.s404, msg: 'Your PunchIn Details Does Not Exist!' }) };
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
-        let remark = '';
-        if (empAttendanceData.site_location_id !== site_location_id) { remark = `Red Flag Employee PuchIn From Location ID ${empAttendanceData.site_location_id}  and PunchOut From Location ID ${site_location_id} both are Different.` }
-        else { remark = `${empAttendanceData.remark} and Punch Out Distance is ${location_distance_bykm}.` }
-        empAttendanceData.check_out = new Date();
-        empAttendanceData.check_out_location_distance_bykm = parseInt(location_distance_bykm);
+        const remark = location_distance_bykm > 1000 ? `PunchOut Distance is Greater Than 1000 Meter -- ${location_distance_bykm}. ` : `PunchOut Distance is Less Than 1000 Meter -- ${location_distance_bykm}.`;
+        empAttendanceData.check_out = indianTimeDate;
+        empAttendanceData.check_out_loc_dis_inmeter = parseInt(location_distance_bykm);
         empAttendanceData.remark = remark;
+        empAttendanceData.check_out_site_location_id = site_location_id;
+        empAttendanceData.check_out_remark = remark;
         await empAttendanceData.save();
-        return res.status(200).send({ status: env.s200, msg: "You PunchOut Successfully!", data: {} });
+        const empAttenSummary = await empAttenSummaryModel.findOne({
+            where: {
+                atten_date: indianTimeDate,
+                emp_id: employee.emp_id,
+            }
+        })
+        if (empAttenSummary) {
+            const lastCheckIn = await empAttenSummary.last_check_in;
+            console.log("inside empAttenSummary", "lastCheckIn", lastCheckIn)
+            const currentTime = indianTimeDate;
+            const minutesOnSite = empAttenSummary.total_minutes_on_site || 0;
+
+            // Calculate the time difference in milliseconds
+            const timeDifference = currentTime - lastCheckIn;
+            console.log("timeDifference", timeDifference);
+            // Convert milliseconds to minutes
+            const timeDifferenceInMinutes = Math.floor(timeDifference / (1000 * 60));
+            console.log(timeDifference, timeDifferenceInMinutes);
+            // Update the total minutes on site
+            empAttenSummary.last_check_out = currentTime;
+            console.log("time", "currentTime-->", currentTime, "-->", "lastCheckIn", lastCheckIn, "timeDifference-->", timeDifference, "timeDifferenceInMinutes-->", timeDifferenceInMinutes, "currentTimeIST-->", currentTimeIST,);
+            empAttenSummary.total_minutes_on_site = minutesOnSite + timeDifferenceInMinutes;
+            await empAttenSummary.save();
+
+        }
+        return res.status(200).send({ status: env.s200, msg: "You PunchOut Successfully!", data: [] });
     } catch (error) {
         console.log("error-->", error)
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
@@ -85,7 +124,7 @@ const markLeave = async (req, res) => {
         let remark = '';
         if (empAttendanceData.site_location_id !== site_location_id) { remark = `Red Flag Employee PuchIn From Location ID ${empAttendanceData.site_location_id}  and PunchOut From Location ID ${site_location_id} both are Different.` }
         else { remark = `${empAttendanceData.remark} and Punch Out Distance is ${location_distance_bykm}.` }
-        empAttendanceData.check_out = new Date();
+        empAttendanceData.check_out = currentTimeIST;
         empAttendanceData.check_out_location_distance_bykm = parseInt(location_distance_bykm);
         empAttendanceData.remark = remark;
         await empAttendanceData.save();
@@ -107,6 +146,19 @@ const getEmpLastTenAttendanceRecord = async (req, res) => {
             order: [['attendance_id', 'DESC']],
             limit: 10,
         });
+        // const empAttendancesData = await employeesattendanceModel.findAll({
+        //     where: {
+        //       emp_id: employee?.emp_id,
+        //     },
+        //     include: [
+        //       {
+        //         model: siteslocationModel,
+        //         where: { location_id: Sequelize.col('attendance.check_in_site_location_id') },
+        //       },
+        //     ],
+        //     order: [['attendance_id', 'DESC']],
+        //     limit: 10,
+        //   })
         if (!empAttendancesData) { return res.status(404).json({ status: env.s404, msg: 'Employees Attendance Record Not Found!' }) };
         console.log("send it");
         return res.status(200).send({ status: env.s200, msg: "Employees Attendance Found Successfully!", data: empAttendancesData });
@@ -143,6 +195,15 @@ const getAllSite = async (req, res) => {
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 }
+const getAllDept = async (req, res) => {
+    try {
+        const allDept = await departmentsModel.findAll();
+        return res.status(200).send({ status: env.s200, msg: "All Departments Fetched Successfully", data: allDept });
+    } catch (error) {
+        logger.error(`server error inside getAllDept controller${error}`);
+        return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
+    }
+}
 const markAbsence = async (req, res) => {
     try {
         const { leave_reason } = req.body;
@@ -151,8 +212,8 @@ const markAbsence = async (req, res) => {
         console.log("emp", emp);
         if (!emp) { return res.status(404).json({ status: env.s404, msg: 'Employee Record Not Found!' }) };
         const leaveData = {
-            emp_id: emp.emp_emailid,
-            leave_date: new Date(),
+            emp_id: emp.emp_id,
+            leave_date: currentTimeIST,
             leave_reason: leave_reason || 'NA'
         }
         console.log("check", leaveData);
@@ -165,11 +226,70 @@ const markAbsence = async (req, res) => {
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 }
+const getEmps = async (req, res) => {
+    try {
+        const { user_role, dept_id } = req.body;
+        if (user_role === 1) {
+            const empData = await employeesModel.findAll({
+                where: {
+                    emp_type: {
+                        [Sequelize.Op.gt]: 1
+                    }
+                },
+                attributes: ['emp_id', 'emp_name', 'department_id'],
+            });
+            if (!empData) { return res.status(401).send({ status: env.s401, msg: "Employees Not Found", data: [] }); };
+            return res.status(200).send({ status: env.s200, msg: "Employees Found Successfully!", data: empData });
+        } else if (user_role === 2) {
+            if (!dept_id) { return res.status(422).send({ status: env.s422, msg: "Invalid Department ID", data: [] }); }
+            const empData = await employeesModel.findAll({
+                where: {
+                    emp_type: {
+                        [Sequelize.Op.gt]: 1
+                    },
+                    department_id: dept_id
+                },
+                attributes: ['emp_id', 'emp_name', 'department_id'],
+            });
+            if (!empData) { return res.status(401).send({ status: env.s401, msg: "Employees Not Found", data: [] }); }
+            return res.status(200).send({ status: env.s200, msg: "Employees Found Successfully!", data: empData });
+        } else {
+            return res.status(401).send({ status: env.s401, msg: "You are Unauthorized", data: {} });
+        }
+
+    } catch (error) {
+        logger.error(`server error inside getAllSite controller${error}`);
+        return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
+    }
+}
+
+const empAttendanceData = async (req, res) => {
+    try {
+        const { emp_id, startDate, endDate } = req.body;
+        const empAttenData = await employeesattendanceModel.findAll({
+            where: {
+                emp_id: emp_id,
+                atten_date: {
+                    [Sequelize.Op.between]: [startDate, endDate],
+                },
+            }
+        })
+        if (!empAttenData) { return res.status(401).send({ status: env.s401, msg: "Employees Attendance Data Not Found", data: [] }); }
+        return res.status(200).send({ status: env.s200, msg: "Employees Attendance Data Fetched Successfully", data: empAttenData });
+    } catch (error) {
+        logger.error(`server error inside empAttendanceData controller${error}`);
+        return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
+    }
+}
+
 module.exports = {
     checkIn,
     checkOut,
     getEmpLastTenAttendanceRecord,
     forgetPassword,
     getAllSite,
-    markAbsence
+    markAbsence,
+    getEmps,
+    empAttendanceData,
+    getAllDept
 }

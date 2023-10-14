@@ -9,11 +9,16 @@ const { hashPassword } = require("../../utils/index");
 
 const createEmployee = async (req, res) => {
     try {
-        const { emp_id, emp_name, emp_phoneno, emp_emailid, emp_phone_imeino, department_id, emp_adddress, profile_img_path, emp_type, emp_joiningdate, emp_leavingdate, emp_status, password } = req.body;
+        const { emp_id, emp_name, emp_phoneno, emp_emailid, emp_phone_imeino, emp_address, profile_img_path, emp_joiningdate, password, emp_degination} = req.body;
+        const emp_type = parseInt(req.body?.emp_type);
+        const department_id = parseInt(req.body?.department_id);
+        console.log(emp_type)
+        if(emp_type<0 || emp_type>3){return res.status(422).send({ status: env.s422, msg: "Invalid Employee Type.", data: [] });};
+        const user = req.user;
         // check emp existance.
         const emp = await employeesModel.findByPk(emp_id);
         const loginCred = await loginsModel.findByPk(emp_emailid);
-        if (emp || loginCred) { return res.status(409).send({ status: env.s409, msg: "Employee already Exist", data: { authToken: token, expires: Date.now() + oneYear, employee: employee } }); };
+        if (emp || loginCred) { return res.status(409).send({ status: env.s409, msg: "Employee already Exist", })};
         const empData = {
             emp_id: emp_id,
             emp_name: emp_name,
@@ -21,11 +26,14 @@ const createEmployee = async (req, res) => {
             emp_emailid: emp_emailid,
             emp_phone_imeino: emp_phone_imeino || 123456789123456,
             department_id: department_id,
-            emp_adddress: emp_adddress || 'NA',
-            profile_img_path: 'profile_images/' + profile_img_path,
+            emp_address: emp_address || 'NA',
+            profile_img_path: profile_img_path || 'NA',
             emp_type: emp_type,
             emp_joiningdate: emp_joiningdate || new Date(),
-            emp_status: 1
+            emp_status: 1,
+            emp_degination:emp_degination,
+            creater_id:user?.user_id,
+            creation_date:new Date()
         };
         const hash_password = await hashPassword(password);
 
@@ -41,8 +49,9 @@ const createEmployee = async (req, res) => {
             return new Promise(async (resolve, reject) => {
                 try {
                     await sequelize().transaction(async (t) => {
-                        await emp.create(empData);
-                        await loginCred.create(loginData);
+                        await employeesModel.create(empData);
+                        console.log("done1");
+                        await loginsModel.create(loginData);
                         await t.commit();// Commit the transaction
                         resolve({ "status": "committed" });// Resolve the Promise to indicate successful commit
                     });
@@ -52,23 +61,29 @@ const createEmployee = async (req, res) => {
             });
         };
         const newEmp = await performTransaction();
-        if (!newEmp) { return res.status(417).send({ status: env.s417, msg: "Failed to Create New Employee.", data: {} }); };
+        if (!newEmp) { return res.status(417).send({ status: env.s417, msg: "Failed to Create New Employee.", data: [] }); };
         return res.status(201).send({ status: env.s201, msg: "New Employee Created Successfully", data: newEmp });
     } catch (error) {
+        console.log(error);
         logger.error(`server error inside createEmployee controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 }
 const createSite = async (req, res) => {
     try {
+        const user = req.user;
         const { latitude, longitude, location_name } = req.body;
+        const lat = parseFloat(latitude);
+        const long = parseFloat(longitude);
         const siteData = {
-            latitude: latitude,
-            longitude: longitude,
+            latitude: lat,
+            longitude: long,
             location_name: location_name,
+            creater_id:user?.user_id,
+            creation_date:new Date(),
         }
         await siteslocationModel.create(siteData);
-        return res.status(201).send({ status: env.s201, msg: "New Site Created Successfully", data: newEmp });
+        return res.status(201).send({ status: env.s201, msg: "New Site Created Successfully", data: siteData });
     } catch (error) {
         logger.error(`server error inside createSite controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
@@ -109,7 +124,7 @@ const updateEmployee = async (req, res) => {
         emp.emp_address = emp_address;
         await emp.save();
         console.log("done");
-        return res.status(201).send({ status: env.s201, msg: "Employee Details Updated Successfully", data: empt });
+        return res.status(201).send({ status: env.s201, msg: "Employee Details Updated Successfully", data: emp });
     } catch (error) {
         console.log(error);
         logger.error(`server error inside updateEmployee controller${error}`);
@@ -169,7 +184,6 @@ const getAttendanceData = async (req, res) => {
         logger.error(`server error inside getAttendanceData controller${error}`);
     }
 }
-
 
 module.exports = {
     createEmployee,

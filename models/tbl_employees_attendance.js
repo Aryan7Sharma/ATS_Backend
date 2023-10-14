@@ -46,16 +46,20 @@ const EmployeesAttendance = sequelize().define(
       type: DataTypes.DATE,
       allowNull : true,
     },
-    check_in_loc_dis_inkm: {
+    check_in_loc_dis_inmeter: {
       type: DataTypes.INTEGER,
       allowNull : false,
     },
-    check_out_loc_dis_inkm: {
+    check_out_loc_dis_inmeter: {
       type: DataTypes.INTEGER,
       allowNull:true,
     },
-    remark: {
+    check_in_remark: {
       type: DataTypes.STRING,
+    },
+    check_out_remark: {
+      type: DataTypes.STRING,
+      defaultValue:'NA',
     },
   },
   {

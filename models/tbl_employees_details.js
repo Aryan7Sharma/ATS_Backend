@@ -56,6 +56,20 @@ const EmployeesDetails = sequelize().define(
       type: DataTypes.INTEGER,
       defaultValue:1,
     },
+    creater_id:{
+      type:DataTypes.STRING,
+      allowNull:false,
+      defaultValue:'NA'
+    },
+    creation_date:{
+      type:DataTypes.DATE,
+      allowNull:false
+    },
+    emp_degination:{
+      type:DataTypes.STRING,
+      allowNull:false,
+      defaultValue:'NA'
+    },
   },
   {
     timestamps: false,
