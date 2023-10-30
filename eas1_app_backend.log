@@ -375,3 +375,82 @@
 {"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-14T17:06:33.939Z"}
 {"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-14T17:06:59.877Z"}
 {"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-14T18:07:27.572Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-14T19:40:29.355Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-14T20:26:12.122Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-14T20:28:08.318Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-16T15:14:29.109Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-16T15:26:09.214Z"}
+{"level":"info","message":"Server connected to 8001 Port","timestamp":"2023-10-16T15:27:32.427Z"}
+{"level":"info","message":"Server connected to 8001 Port","timestamp":"2023-10-23T08:34:59.418Z"}
+{"level":"info","message":"Server connected to 8001 Port","timestamp":"2023-10-23T08:37:59.900Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:39:46.086Z"}
+{"level":"error","message":"server error inside customReport1 Report controllerTypeError: Cannot read properties of undefined (reading 'SELECT')","timestamp":"2023-10-23T08:42:35.071Z"}
+{"level":"error","message":"server error inside customReport1 Report controllerTypeError: Cannot read properties of undefined (reading 'SELECT')","timestamp":"2023-10-23T08:43:18.019Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:43:30.125Z"}
+{"level":"error","message":"server error inside customReport1 Report controllerTypeError: Cannot read properties of undefined (reading 'SELECT')","timestamp":"2023-10-23T08:43:34.776Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:44:09.622Z"}
+{"level":"error","message":"server error inside customReport1 Report controllerTypeError: Cannot read properties of undefined (reading 'SELECT')","timestamp":"2023-10-23T08:44:12.358Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:45:45.986Z"}
+{"level":"error","message":"server error inside customReport1 Report controllerTypeError: sequelize.query is not a function","timestamp":"2023-10-23T08:45:51.806Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:47:34.992Z"}
+{"level":"error","message":"server error inside customReport1 Report controllerTypeError: sequelize.query is not a function","timestamp":"2023-10-23T08:47:46.151Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:49:59.799Z"}
+{"level":"error","message":"server error inside customReport1 Report controllerTypeError: Cannot read properties of undefined (reading 'SELECT')","timestamp":"2023-10-23T08:50:13.095Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:51:06.140Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:54:53.739Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:57:16.269Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:57:55.534Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T08:58:42.671Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T09:02:59.015Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-23T09:35:05.892Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerSequelizeDatabaseError: structure of query does not match function result type","timestamp":"2023-10-23T11:49:02.146Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T07:43:12.651Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T09:52:36.987Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T11:09:55.158Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T11:19:19.418Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T11:30:30.037Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T11:33:38.678Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T11:37:11.026Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T11:40:18.818Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T11:40:36.912Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T11:57:13.932Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T12:03:45.334Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T12:07:36.752Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-25T17:20:41.649Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T06:12:01.723Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:15:19.980Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:16:56.264Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:17:48.887Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:23:47.236Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:25:01.772Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeUniqueConstraintError: Validation error","timestamp":"2023-10-26T09:25:18.439Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:28:49.436Z"}
+{"level":"error","message":"server error inside updateEmployee controllerReferenceError: emp_degination is not defined","timestamp":"2023-10-26T09:29:02.368Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:31:19.188Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:38:18.798Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeValidationError: string violation: hash_password cannot be an array or an object","timestamp":"2023-10-26T09:38:29.374Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:39:08.760Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeValidationError: notNull Violation: tbl_login_credentials.hash_password cannot be null","timestamp":"2023-10-26T09:40:48.886Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:42:39.438Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeValidationError: notNull Violation: tbl_login_credentials.hash_password cannot be null","timestamp":"2023-10-26T09:42:58.049Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:43:14.711Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeValidationError: notNull Violation: tbl_login_credentials.hash_password cannot be null","timestamp":"2023-10-26T09:43:26.717Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:44:54.045Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeValidationError: notNull Violation: tbl_login_credentials.hash_password cannot be null","timestamp":"2023-10-26T09:45:34.775Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:46:18.397Z"}
+{"level":"error","message":"server error inside updateEmployee controllerSequelizeValidationError: notNull Violation: tbl_login_credentials.hash_password cannot be null","timestamp":"2023-10-26T09:46:20.874Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T09:48:35.603Z"}
+{"level":"error","message":"Invalid database connection...! causing error SequelizeConnectionError: could not write init file","timestamp":"2023-10-26T10:05:20.209Z"}
+{"level":"error","message":"Invalid database connection...! causing error SequelizeConnectionError: could not write init file","timestamp":"2023-10-26T10:08:56.884Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T10:11:17.857Z"}
+{"level":"error","message":"Invalid database connection...! causing error SequelizeConnectionError: could not write init file","timestamp":"2023-10-26T10:14:56.535Z"}
+{"level":"error","message":"Invalid database connection...! causing error SequelizeConnectionError: could not write init file","timestamp":"2023-10-26T10:15:02.694Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-26T11:47:59.193Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-27T05:23:35.436Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-27T10:19:58.892Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-28T04:44:40.474Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-29T05:35:58.473Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-29T15:56:59.006Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-29T17:57:38.501Z"}
+{"level":"error","message":"Invalid database connection...! causing error SequelizeConnectionError: connect ENETUNREACH 3.108.236.67:5432","timestamp":"2023-10-29T18:31:20.989Z"}
+{"level":"info","message":"Server connected to 3001 Port","timestamp":"2023-10-29T18:33:46.962Z"}

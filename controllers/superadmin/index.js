@@ -9,16 +9,22 @@ const { hashPassword } = require("../../utils/index");
 
 const createEmployee = async (req, res) => {
     try {
-        const { emp_id, emp_name, emp_phoneno, emp_emailid, emp_phone_imeino, emp_address, profile_img_path, emp_joiningdate, password, emp_degination} = req.body;
+        const { emp_id, emp_name, emp_phoneno, emp_emailid, emp_phone_imeino, emp_address, emp_joiningdate, password, emp_degination } = req.body;
+        profile_img_path = 'NA';
+        if (req.file) {
+            const uploadProfileImage = req.file;
+            console.log(uploadProfileImage);
+            profile_img_path = uploadProfileImage?.filename;
+        }
         const emp_type = parseInt(req.body?.emp_type);
         const department_id = parseInt(req.body?.department_id);
         console.log(emp_type)
-        if(emp_type<0 || emp_type>3){return res.status(422).send({ status: env.s422, msg: "Invalid Employee Type.", data: [] });};
+        if (emp_type < 0 || emp_type > 3) { return res.status(422).send({ status: env.s422, msg: "Invalid Employee Type.", data: [] }); };
         const user = req.user;
         // check emp existance.
         const emp = await employeesModel.findByPk(emp_id);
         const loginCred = await loginsModel.findByPk(emp_emailid);
-        if (emp || loginCred) { return res.status(409).send({ status: env.s409, msg: "Employee already Exist", })};
+        if (emp || loginCred) { return res.status(409).send({ status: env.s409, msg: "Employee already Exist", }) };
         const empData = {
             emp_id: emp_id,
             emp_name: emp_name,
@@ -31,9 +37,9 @@ const createEmployee = async (req, res) => {
             emp_type: emp_type,
             emp_joiningdate: emp_joiningdate || new Date(),
             emp_status: 1,
-            emp_degination:emp_degination,
-            creater_id:user?.user_id,
-            creation_date:new Date()
+            emp_degination: emp_degination,
+            creater_id: user?.user_id,
+            creation_date: new Date()
         };
         const hash_password = await hashPassword(password);
 
@@ -62,7 +68,8 @@ const createEmployee = async (req, res) => {
         };
         const newEmp = await performTransaction();
         if (!newEmp) { return res.status(417).send({ status: env.s417, msg: "Failed to Create New Employee.", data: [] }); };
-        return res.status(201).send({ status: env.s201, msg: "New Employee Created Successfully", data: newEmp });
+        console.log("done");
+        return res.status(201).send({ status: env.s201, msg: "New Employee Created Successfully", data: { msg: "Created Successfully" } });
     } catch (error) {
         console.log(error);
         logger.error(`server error inside createEmployee controller${error}`);
@@ -79,8 +86,8 @@ const createSite = async (req, res) => {
             latitude: lat,
             longitude: long,
             location_name: location_name,
-            creater_id:user?.user_id,
-            creation_date:new Date(),
+            creater_id: user?.user_id,
+            creation_date: new Date(),
         }
         await siteslocationModel.create(siteData);
         return res.status(201).send({ status: env.s201, msg: "New Site Created Successfully", data: siteData });
@@ -91,23 +98,34 @@ const createSite = async (req, res) => {
 }
 const updateEmployee = async (req, res) => {
     try {
-        const { emp_name, emp_id, emp_email_id, emp_phoneno, emp_address } = req.body;
+        const { emp_name, emp_id, emp_email_id, emp_emailid, emp_phoneno, emp_address, emp_joiningdate, emp_degination, password } = req.body;
         const emp = await employeesModel.findByPk(emp_id);
-
+        if (!emp_name || !emp_id || !emp_phoneno || !emp_address || !emp_joiningdate || !emp_degination) {
+            return res.status(404).send({ status: env.s404, msg: "Some Fields are Empty!", data: [] });
+        }
         if (!emp) {
             return res.status(404).send({ status: env.s404, msg: "Employee Details Not Found", data: {} });
         }
-        if (emp.emp_emailid !== emp_email_id) {
-            const empLogin = await loginsModel.findByPk(emp?.emp_emailid);
-
+        const empLogin = await loginsModel.findByPk(emp?.emp_emailid);
+        const emaild = emp_email_id || emp_emailid;
+        let newPassword = null;
+        if (password?.length > 8 && password?.length < 16) {
+            const newhashpass = await hashPassword(password);
+            newPassword = newhashpass;
+        }
+        if (newPassword) {
+            empLogin.hash_password = newPassword;
+            await empLogin.save();
+        }
+        if (emp.emp_emailid !== emaild) {
             if (!empLogin) {
                 return res.status(404).send({ status: env.s404, msg: "Employee Login Credentials Not Found", data: {} });
             }
-
             // Create a new empLogin record with the updated user_id
+            const newHashPass = newPassword || empLogin.hash_password;
             const newEmpLogin = await loginsModel.create({
-                user_id: emp_email_id,
-                hash_password: empLogin.hash_password,
+                user_id: emp_email_id || emp_emailid,
+                hash_password: newHashPass,
                 imei_no: empLogin.imei_no,
                 user_type: empLogin.user_type,
                 emp_status: empLogin.emp_status,
@@ -118,12 +136,13 @@ const updateEmployee = async (req, res) => {
             await empLogin.destroy();
         }
         // Update the references in the employee record
-        emp.emp_emailid = emp_email_id;
+        emp.emp_emailid = emp_email_id || emp_emailid;
         emp.emp_phoneno = emp_phoneno;
         emp.emp_name = emp_name;
         emp.emp_address = emp_address;
+        emp.emp_degination = emp_degination;
+        emp.emp_joiningdate = emp_joiningdate;
         await emp.save();
-        console.log("done");
         return res.status(201).send({ status: env.s201, msg: "Employee Details Updated Successfully", data: emp });
     } catch (error) {
         console.log(error);

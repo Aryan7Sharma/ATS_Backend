@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const keysecret = process.env.SECRET_KEY
 const { loginsModel } = require("../../models/index"); // Model
+const logger = require('../../config/app_logger');
 const { env } = process;
 
 const verifyUser = async (req, res, next) => {

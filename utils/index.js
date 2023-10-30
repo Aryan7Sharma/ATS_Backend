@@ -31,7 +31,7 @@ const isValidLatitude = (value) => {
         return false;
     }
     const decimalPlaces = (latitude.toString().split('.')[1] || '').length;
-    console.log("value", value, decimalPlaces === 7);
+    console.log("value", value, decimalPlaces>= 7);
     return decimalPlaces === 7;
 };
 
@@ -46,7 +46,7 @@ const isValidLongitude = (value) => {
         return false;
     }
     const decimalPlaces = (longitude.toString().split('.')[1] || '').length;
-    return decimalPlaces === 7;
+    return decimalPlaces >= 7;
 };
 
 module.exports = {
