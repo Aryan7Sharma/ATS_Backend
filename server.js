@@ -41,7 +41,7 @@ cron.schedule('00 1 * * *', () => {
 });
 
 
-const port = 3001 //process.env.eas1_backend_Port;
+const port = 3002 //process.env.eas1_backend_Port;
 /** start server only when we have valid connection */
 connectDB().authenticate().then(() => {
     try {
