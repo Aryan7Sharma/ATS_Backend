@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const { Op } = Sequelize;
 const { sendPunchOutNotifyEmail } = require('../utils/sendMail');
 const { employeesattendanceModel, employeesModel } = require("../models/index");
-const logger =  require('../config/app_logger');
+const logger = require('../config/app_logger');
 
 const getEmpNotPunchedOut = async () => {
     let empData = [];
@@ -12,7 +12,7 @@ const getEmpNotPunchedOut = async () => {
             attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('emp_id')), 'emp_id']],
             where: {
                 atten_date: {
-                    [Op.eq]: '2023-11-01',
+                    [Op.eq]: currentDate,
                 },
                 check_out: {
                     [Op.is]: null,
