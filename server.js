@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cron = require('node-cron');
 const logger = require('./config/app_logger');
 const connectDB = require('./config/db_connection');
 const express = require('express');
@@ -12,7 +13,8 @@ app.disable('x-powered-by'); // less hackers know about our stack
 //app.use(cookieParser);
 
 // import middlewares
-const {verifyUser,verifyEmployee,verifyAdmin,verifySuperAdmin} = require("./middlewares/auth/index");
+const { verifyUser, verifyEmployee, verifyAdmin, verifySuperAdmin } = require("./middlewares/auth/index");
+const {notifyPunchInUsers} = require("./cron/index");
 
 // import routes
 const authRoute = require("./routes/auth");
@@ -21,19 +23,23 @@ const superadminRoute = require("./routes/superadmin");
 const adminRoute = require("./routes/admin");
 const employeeRoute = require("./routes/employee");
 
-app.use('/ats/api/auth',authRoute);
-app.use('/ats/api/public',verifyUser, publicRoute);
+app.use('/ats/api/auth', authRoute);
+app.use('/ats/api/public', verifyUser, publicRoute);
 app.use('/ats/api/superadmin', verifySuperAdmin, superadminRoute);
 app.use('/ats/api/admin', verifyAdmin, adminRoute);
-app.use('/ats/api/employee',verifyEmployee, employeeRoute);
-
- 
+app.use('/ats/api/employee', verifyEmployee, employeeRoute);
 
 
 
-app.get('/', (req, res) => {
-    res.json({ msg: 'Hello from server' });
+
+
+cron.schedule('30 13 * * *', () => {
+    notifyPunchInUsers();
 });
+cron.schedule('00 1 * * *', () => {
+    notifyPunchInUsers();
+});
+
 
 const port = 3001 //process.env.eas1_backend_Port;
 /** start server only when we have valid connection */

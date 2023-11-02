@@ -89,8 +89,8 @@ const createSite = async (req, res) => {
             creater_id: user?.user_id,
             creation_date: new Date(),
         }
-        await siteslocationModel.create(siteData);
-        return res.status(201).send({ status: env.s201, msg: "New Site Created Successfully", data: siteData });
+        const newSite = await siteslocationModel.create(siteData);
+        return res.status(201).send({ status: env.s201, msg: "New Site Created Successfully", data: newSite });
     } catch (error) {
         logger.error(`server error inside createSite controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });

@@ -64,6 +64,7 @@ const verifyAdmin = async (req, res, next) => {
 const verifySuperAdmin = async (req, res, next) => {
     try {
         const token = req.headers?.authorization || req.headers?.Authorization || req.cookies?.token;
+        console.log(token,"token server");
         if (!token) { return res.status(401).json({ status: env.s401, msg: 'Token not provided' }) };
         const decodetoken = jwt.verify(token, keysecret);
         if(!decodetoken?.id){return res.status(401).json({ status: env.s401, msg: 'Decoding Token Failed!' })};

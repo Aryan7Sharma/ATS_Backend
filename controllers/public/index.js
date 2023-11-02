@@ -282,6 +282,28 @@ const empAttendanceData = async (req, res) => {
     }
 }
 
+const createSite = async (req, res) => {
+    try {
+        const user = req.user;
+        const { latitude, longitude, location_name,active_status } = req.body;
+        const lat = parseFloat(latitude);
+        const long = parseFloat(longitude);
+        const siteData = {
+            latitude: lat,
+            longitude: long,
+            location_name: location_name,
+            creater_id: user?.user_id,
+            creation_date: new Date(),
+            active_status: active_status || 0,
+        }
+        const newSite = await siteslocationModel.create(siteData);
+        return res.status(201).send({ status: env.s201, msg: "New Site Created Successfully", data: newSite });
+    } catch (error) {
+        logger.error(`server error inside createSite controller${error}`);
+        return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
+    }
+}
+
 module.exports = {
     checkIn,
     checkOut,
@@ -291,5 +313,6 @@ module.exports = {
     markAbsence,
     getEmps,
     empAttendanceData,
-    getAllDept
+    getAllDept,
+    createSite
 }

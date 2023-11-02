@@ -4,8 +4,9 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'fcreation.tech@gmail.com',
-        pass: 'cztyfotvdzodsbot',
+        user: 'mvservices.tech@gmail.com',//'fcreation.tech@gmail.com',
+        pass: 'wtzz lidi baql zgqn',
+        //pass: 'cztyfotvdzodsbot',
     },
 });
 
@@ -27,7 +28,7 @@ Thank you for using our services.
 Best regards,
 MV Services Pvt Ltd.
 Phone No -- 8923136015`
-}
+    }
     return messages[type]
 }
 
@@ -52,6 +53,32 @@ const sendNewPassword = async (email, newPassword) => {
     });
 }
 
+// Function to send an email
+const sendPunchOutNotifyEmail = async (recipient) => {
+    const mailOptions = {
+        from: 'your_email@gmail.com',
+        to: recipient?.emp_emailid,
+        subject: 'Notification -- Not Punch Out Yet',
+        text:
+            `Dear ${recipient?.emp_name},
+
+You haven't punched out for ${new Date().toLocaleDateString()}. Please do so, or the system will automatically punch you out at 12 AM.
+        
+
+Thanks & Best Regards,
+HR`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Email sent to: ${recipient.emp_name}`);
+    } catch (error) {
+        console.error(`Email sending failed to: ${recipient.emp_name}, ${error}`);
+        // Handle the error or choose to continue to the next recipient
+    }
+};
+
 module.exports = {
-    sendNewPassword
+    sendNewPassword,
+    sendPunchOutNotifyEmail
 };

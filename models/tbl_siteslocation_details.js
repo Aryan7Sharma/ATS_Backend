@@ -21,15 +21,20 @@ const SitesLocationDetails = sequelize().define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    creater_id:{
-      type:DataTypes.STRING,
-      allowNull:false,
-      defaultValue:'NA'
+    creater_id: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'NA'
     },
-    creation_date:{
-      type:DataTypes.DATE,
-      allowNull:false
-    }
+    creation_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    active_status: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+    },
   },
   {
     timestamps: false,

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
+const {isValidLatitude, isValidLongitude} = require('../utils/index');
 // import middlewares
 const validateBody = require("../middlewares/express_validator/validateBody");
 
@@ -44,4 +45,11 @@ router.post("/getempattendata",
         check('endDate').exists().withMessage('Invalid End Date!')
     ]
     , validateBody, publicmainController.empAttendanceData);
+
+router.post("/addnewsite",
+    [
+        check('latitude').exists().withMessage('Latitude is required').custom(isValidLatitude).withMessage('Invalid Latitude'),
+        check('longitude').exists().withMessage('Longitude is required').custom(isValidLongitude).withMessage('Invalid Longitude'),
+        check('location_name').exists().isLength({ min: 2, max: 256 }).withMessage('Invalid Site/Location Name'),
+    ], validateBody, publicmainController.createSite);
 module.exports = router;
