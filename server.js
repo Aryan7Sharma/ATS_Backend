@@ -36,9 +36,9 @@ app.use('/ats/api/employee', verifyEmployee, employeeRoute);
 cron.schedule('00 22 * * *', () => {
     notifyPunchInUsers();
 });
-cron.schedule('30 6 * * *', () => {
-    notifyPunchInUsers();
-});
+// cron.schedule('30 6 * * *', () => {
+//     notifyPunchInUsers();
+// });
 
 
 const port = 3002 //process.env.eas1_backend_Port;
