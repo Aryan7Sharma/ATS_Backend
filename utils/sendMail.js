@@ -71,7 +71,7 @@ HR`,
 
     try {
         await transporter.sendMail(mailOptions);
-        console.log(`Email sent to: ${recipient.emp_name}`);
+        //console.log(`Email sent to: ${recipient.emp_name}`);
     } catch (error) {
         console.error(`Email sending failed to: ${recipient.emp_name}, ${error}`);
         // Handle the error or choose to continue to the next recipient

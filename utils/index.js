@@ -21,9 +21,9 @@ const hashPassword = async (plainPassword) => {
 }
 
 const isValidLatitude = (value) => {
-    console.log("value", value);
+    //console.log("value", value);
     const latitude = parseFloat(value);
-    console.log("value", value);
+    //console.log("value", value);
     if (isNaN(latitude)) {
         return false;
     }
@@ -31,7 +31,7 @@ const isValidLatitude = (value) => {
         return false;
     }
     const decimalPlaces = (latitude.toString().split('.')[1] || '').length;
-    console.log("value", value, decimalPlaces>= 7);
+    //console.log("value", value, decimalPlaces>= 7);
     return decimalPlaces === 7;
 };
 

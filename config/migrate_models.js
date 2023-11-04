@@ -2,7 +2,7 @@
 const migrate  = async (db) => {
     try {
       await db.sync();
-      console.log('Model synchronized successfully.');
+      //console.log('Model synchronized successfully.');
     } catch (error) {
       console.error('Error synchronizing the model:', error);
     }

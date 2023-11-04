@@ -1,9 +1,9 @@
 const {validationResult} = require('express-validator');
 
 const validateBody = async (req, res, next) => {
-    console.log(req.body);
+    //console.log(req.body);
     const errors = await validationResult(req);
-    console.log("inside validate body");
+    //console.log("inside validate body");
     if (!errors.isEmpty()) {
       return res.status(422).json(errors.array());
     } else {

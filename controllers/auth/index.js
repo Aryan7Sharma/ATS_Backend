@@ -21,6 +21,9 @@ const login = async (req, res) => {
         //if (user_login.emp_status !== 1) { return res.status(401).send({ status: env.s422, msg: "User Blocked by Admin" }) };
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_id } });
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
+        const login_count = user_login.login_count + 1;
+        user_login.login_count = login_count;
+        await user_login.save();
         const token = jwt.sign({ id: user_id }, SecretKey, { expiresIn: '2y' });
         const oneYear = 1000 * 60 * 60 * 24 * 365 * 2;
         res.cookie("token", token, {
@@ -29,7 +32,6 @@ const login = async (req, res) => {
         });
         return res.status(200).send({ status: env.s200, msg: "You Logged In Successfully!", data: { authToken: token, expires: Date.now() + oneYear, employee:employee } });
     } catch (error) {
-        console.log("e", error);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
@@ -49,7 +51,6 @@ const forgetPassword = async (req, res) => {
         // sending final responce;
         res.status(200).json({ status: env.s200, msg: "New Passord Send into Your Registered Mail ID." });
     } catch (error) {
-        console.log("error-->", error);
         res.status(500).json({ status: env.s500, msg: "Internal Server Error", error: error });
     }
 };

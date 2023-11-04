@@ -21,7 +21,6 @@ const checkIn = async (req, res) => {
         const respData = { attendanceId: checkInData.attendance_id, site_location_id: checkInData.site_location_id, punchInDateTime: checkInData.check_in }
         return res.status(200).send({ status: env.s200, msg: "You PunchIn Successfully!", data: respData });
     } catch (error) {
-        console.log("err",error);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
@@ -43,23 +42,19 @@ const checkOut = async (req, res) => {
         await empAttendanceData.save();
         return res.status(200).send({ status: env.s200, msg: "You PunchOut Successfully!", data: {} });
     } catch (error) {
-        console.log("error-->", error)
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
 
 const getEmpLastTenAttendanceRecord = async (req, res) => {
     try {
-        console.log("start")
         const user_login = {'user_id':'sunny.rathor498@gmail.com'} //req.user;
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
         const empAttendancesData = await employeesattendanceModel.findAll({ where:{emp_id:employee?.emp_id}});
         if (!empAttendancesData) { return res.status(404).json({ status: env.s404, msg: 'Employees Attendance Record Not Found!' }) };
-        console.log("send it");
         return res.status(200).send({ status: env.s200, msg: "Employees Attendance Found Successfully!", data: empAttendancesData });
     } catch (error) {
-        console.log("error-->",error)
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };

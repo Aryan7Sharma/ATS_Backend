@@ -13,12 +13,12 @@ const createEmployee = async (req, res) => {
         profile_img_path = 'NA';
         if (req.file) {
             const uploadProfileImage = req.file;
-            console.log(uploadProfileImage);
+            //console.log(uploadProfileImage);
             profile_img_path = uploadProfileImage?.filename;
         }
         const emp_type = parseInt(req.body?.emp_type);
         const department_id = parseInt(req.body?.department_id);
-        console.log(emp_type)
+        //console.log(emp_type)
         if (emp_type < 0 || emp_type > 3) { return res.status(422).send({ status: env.s422, msg: "Invalid Employee Type.", data: [] }); };
         const user = req.user;
         // check emp existance.
@@ -56,7 +56,7 @@ const createEmployee = async (req, res) => {
                 try {
                     await sequelize().transaction(async (t) => {
                         await employeesModel.create(empData);
-                        console.log("done1");
+                        //console.log("done1");
                         await loginsModel.create(loginData);
                         await t.commit();// Commit the transaction
                         resolve({ "status": "committed" });// Resolve the Promise to indicate successful commit
@@ -68,10 +68,10 @@ const createEmployee = async (req, res) => {
         };
         const newEmp = await performTransaction();
         if (!newEmp) { return res.status(417).send({ status: env.s417, msg: "Failed to Create New Employee.", data: [] }); };
-        console.log("done");
+        //console.log("done");
         return res.status(201).send({ status: env.s201, msg: "New Employee Created Successfully", data: { msg: "Created Successfully" } });
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         logger.error(`server error inside createEmployee controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
@@ -145,7 +145,7 @@ const updateEmployee = async (req, res) => {
         await emp.save();
         return res.status(201).send({ status: env.s201, msg: "Employee Details Updated Successfully", data: emp });
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         logger.error(`server error inside updateEmployee controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }

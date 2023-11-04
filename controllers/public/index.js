@@ -39,8 +39,6 @@ const checkIn = async (req, res) => {
                 emp_id: employee.emp_id,
             }
         })
-        console.log("check emp atten summ", empAttenSummary);
-        console.log("before", new Date(), indianTimeDate);
         if (!empAttenSummary) {
             const empAttenSummaryData = {
                 atten_date: indianTimeDate,
@@ -50,16 +48,12 @@ const checkIn = async (req, res) => {
             }
             await empAttenSummaryModel.create(empAttenSummaryData);
         } else {
-            console.log("before", new Date(), indianTimeDate, empAttenSummary.last_check_in)
             empAttenSummary.last_check_in = indianTimeDate;
-            console.log("after", new Date(), indianTimeDate, empAttenSummary.last_check_in)
             await empAttenSummary.save();
         }
-        console.log('below');
         const respData = { attendanceId: checkInData.attendance_id, site_location_id: checkInData.site_location_id, punchInDateTime: checkInData.check_in }
         return res.status(200).send({ status: env.s200, msg: "You PunchIn Successfully!", data: respData });
     } catch (error) {
-        console.log("err", error);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
@@ -67,7 +61,6 @@ const checkIn = async (req, res) => {
 const checkOut = async (req, res) => {
     try {
         const indianTimeDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
-        console.log("start", indianTimeDate);
         const { site_location_id, location_distance_bykm, attendance_id } = req.body;
         const user_login = req.user;
         const empAttendanceData = await employeesattendanceModel.findByPk(attendance_id);
@@ -89,26 +82,21 @@ const checkOut = async (req, res) => {
         })
         if (empAttenSummary) {
             const lastCheckIn = await empAttenSummary.last_check_in;
-            console.log("inside empAttenSummary", "lastCheckIn", lastCheckIn)
             const currentTime = indianTimeDate;
             const minutesOnSite = empAttenSummary.total_minutes_on_site || 0;
 
             // Calculate the time difference in milliseconds
             const timeDifference = currentTime - lastCheckIn;
-            console.log("timeDifference", timeDifference);
             // Convert milliseconds to minutes
             const timeDifferenceInMinutes = Math.floor(timeDifference / (1000 * 60));
-            console.log(timeDifference, timeDifferenceInMinutes);
             // Update the total minutes on site
             empAttenSummary.last_check_out = currentTime;
-            console.log("time", "currentTime-->", currentTime, "-->", "lastCheckIn", lastCheckIn, "timeDifference-->", timeDifference, "timeDifferenceInMinutes-->", timeDifferenceInMinutes, "currentTimeIST-->", currentTimeIST,);
             empAttenSummary.total_minutes_on_site = minutesOnSite + timeDifferenceInMinutes;
             await empAttenSummary.save();
 
         }
         return res.status(200).send({ status: env.s200, msg: "You PunchOut Successfully!", data: [] });
     } catch (error) {
-        console.log("error-->", error)
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
@@ -130,14 +118,12 @@ const markLeave = async (req, res) => {
         await empAttendanceData.save();
         return res.status(200).send({ status: env.s200, msg: "You PunchOut Successfully!", data: {} });
     } catch (error) {
-        console.log("error-->", error)
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
 
 const getEmpLastTenAttendanceRecord = async (req, res) => {
     try {
-        console.log("start")
         const user_login = req.user;
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
@@ -160,10 +146,8 @@ const getEmpLastTenAttendanceRecord = async (req, res) => {
         //     limit: 10,
         //   })
         if (!empAttendancesData) { return res.status(404).json({ status: env.s404, msg: 'Employees Attendance Record Not Found!' }) };
-        console.log("send it");
         return res.status(200).send({ status: env.s200, msg: "Employees Attendance Found Successfully!", data: empAttendancesData });
     } catch (error) {
-        console.log("error-->", error)
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
@@ -181,7 +165,6 @@ const forgetPassword = async (req, res) => {
         // sending final responce;
         res.status(200).json({ status: env.s200, msg: "New Passord Send into Your Registered Mail ID." });
     } catch (error) {
-        console.log("error-->", error);
         res.status(500).json({ status: env.s500, msg: "Internal Server Error", error: error });
     }
 };
@@ -209,19 +192,15 @@ const markAbsence = async (req, res) => {
         const { leave_reason } = req.body;
         const user = req.user;
         const emp = await employeesModel.findOne({ where: { emp_emailid: user.user_id } });
-        console.log("emp", emp);
         if (!emp) { return res.status(404).json({ status: env.s404, msg: 'Employee Record Not Found!' }) };
         const leaveData = {
             emp_id: emp.emp_id,
             leave_date: currentTimeIST,
             leave_reason: leave_reason || 'NA'
         }
-        console.log("check", leaveData);
         await empLeavesModel.create(leaveData);
-        console.log("done");
         return res.status(200).send({ status: env.s200, msg: "Leave Marked Successfully", data: { 'status': 'done' } });
     } catch (error) {
-        console.log(error)
         logger.error(`server error inside markAbsence controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }

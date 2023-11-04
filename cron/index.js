@@ -31,7 +31,7 @@ const getEmpNotPunchedOut = async () => {
         empData = empNotPunchOutData.map((employee) => {
             return { emp_emailid: employee.emp_emailid, emp_name: employee.emp_name }
         });
-        console.log(empData)
+        //console.log(empData)
     } catch (err) {
 
     } finally {
@@ -46,10 +46,10 @@ async function notifyPunchInUsers() {
         for (const recipient of recipients) {
             sendPunchOutNotifyEmail(recipient)
                 .then((value) => {
-                    console.log("done", value, recipient.emp_emailid);
+                    //console.log("done", value, recipient.emp_emailid);
                 })
                 .catch((error) => {
-                    console.log("failed", error, recipient.emp_emailid);
+                    //console.log("failed", error, recipient.emp_emailid);
                 });
         }
     } catch (err) {

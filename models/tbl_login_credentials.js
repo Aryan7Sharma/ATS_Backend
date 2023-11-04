@@ -12,10 +12,10 @@ const LoginCredentials = sequelize().define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    imei_no: { 
-      type: DataTypes.BIGINT, 
+    imei_no: {
+      type: DataTypes.BIGINT,
       allowNull: false,
-      defaultValue:0,
+      defaultValue: 0,
     },
     user_type: {
       type: DataTypes.INTEGER,
@@ -23,8 +23,16 @@ const LoginCredentials = sequelize().define(
     },
     emp_status: {
       type: DataTypes.INTEGER,
-      defaultValue:1,
+      defaultValue: 1,
     },
+    last_login: {
+      type: DataTypes.DATE,
+    },
+    login_count: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      allowNull: false,
+    }
   },
   {
     timestamps: false,

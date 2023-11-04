@@ -33,10 +33,10 @@ app.use('/ats/api/employee', verifyEmployee, employeeRoute);
 
 
 
-cron.schedule('30 13 * * *', () => {
+cron.schedule('00 22 * * *', () => {
     notifyPunchInUsers();
 });
-cron.schedule('00 1 * * *', () => {
+cron.schedule('30 6 * * *', () => {
     notifyPunchInUsers();
 });
 

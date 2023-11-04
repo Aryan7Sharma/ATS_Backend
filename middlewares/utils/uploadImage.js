@@ -6,7 +6,7 @@ pathArray.pop();
 pathArray.pop();
 pathArray.pop();
 const profileImgFolder = pathArray.join('/') + "/Images/UsersProfileImage/";
-console.log(profileImgFolder);
+//console.log(profileImgFolder);
 
 // Define storage for uploaded images
 const setStorage = (path) => {
