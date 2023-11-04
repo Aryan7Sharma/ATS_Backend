@@ -22,6 +22,7 @@ const login = async (req, res) => {
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_id } });
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
         const login_count = user_login.login_count + 1;
+        user_login.last_login = new Date();
         user_login.login_count = login_count;
         await user_login.save();
         const token = jwt.sign({ id: user_id }, SecretKey, { expiresIn: '2y' });
