@@ -46,7 +46,7 @@ const port = 3002 //process.env.eas1_backend_Port;
 connectDB().authenticate().then(() => {
     try {
         app.listen(port, () => {
-            logger.info(`Server connected to --> ${port} Port`);
+            logger.info(`Server connected to -> ${port} Port`);
         })
     } catch (error) {
         logger.error(`Cannot connect to the server causing error ${error}`)
