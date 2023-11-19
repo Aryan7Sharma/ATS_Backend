@@ -21,6 +21,10 @@ const SitesLocationDetails = sequelize().define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    location_alias: {
+      type: DataTypes.STRING,
+      defaultValue: 'NA'
+    },
     creater_id: {
       type: DataTypes.STRING,
       allowNull: false,

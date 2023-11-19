@@ -79,7 +79,7 @@ const createEmployee = async (req, res) => {
 const createSite = async (req, res) => {
     try {
         const user = req.user;
-        const { latitude, longitude, location_name } = req.body;
+        const { latitude, longitude, location_name,location_alias } = req.body;
         const lat = parseFloat(latitude);
         const long = parseFloat(longitude);
         const siteData = {
@@ -88,6 +88,7 @@ const createSite = async (req, res) => {
             location_name: location_name,
             creater_id: user?.user_id,
             creation_date: new Date(),
+            location_alias:location_alias || 'NA',
         }
         const newSite = await siteslocationModel.create(siteData);
         return res.status(201).send({ status: env.s201, msg: "New Site Created Successfully", data: newSite });
