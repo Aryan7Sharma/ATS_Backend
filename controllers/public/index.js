@@ -171,7 +171,15 @@ const forgetPassword = async (req, res) => {
 
 const getAllSite = async (req, res) => {
     try {
-        const allSites = await siteslocationModel.findAll();
+        const currentDate = new Date().toISOString().split('T')[0]; // Get the current date in 'YYYY-MM-DD' format
+        const allSites = await siteslocationModel.findAll({
+            where: {
+                [Sequelize.Op.or]: [
+                    { active_status: 1 },
+                    Sequelize.literal(`DATE(creation_date) = '${currentDate}'`)
+                ]
+            }
+        });
         return res.status(200).send({ status: env.s200, msg: "All Sites Fetched Successfully", data: allSites });
     } catch (error) {
         logger.error(`server error inside getAllSite controller${error}`);
@@ -264,7 +272,7 @@ const empAttendanceData = async (req, res) => {
 const createSite = async (req, res) => {
     try {
         const user = req.user;
-        const { latitude, longitude, location_name,active_status } = req.body;
+        const { latitude, longitude, location_name, active_status } = req.body;
         const lat = parseFloat(latitude);
         const long = parseFloat(longitude);
         const siteData = {
