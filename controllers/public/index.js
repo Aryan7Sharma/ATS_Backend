@@ -22,6 +22,16 @@ const checkIn = async (req, res) => {
         const user_login = req.user;
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
+        const currentDate = new Date().toISOString().split('T')[0];
+        const checkLastPunchIn = await employeesattendanceModel.findOne({
+            where: {
+                [Sequelize.Op.and]: [
+                    { emp_id: employee.emp_id },
+                    Sequelize.literal(`DATE(atten_date) = '${currentDate}'`)
+                ]
+            }
+        })
+        if (checkLastPunchIn) { return res.status(422).json({ status: env.s422, msg: 'You are Already PunchIn for Today.' }) };
         const remark = location_distance_bykm > 1000 ? `PunchIn Distance is Greater Than 1000 Meter -- ${location_distance_bykm}.` : `PunchIn Distance is Less Than 1000 Meter -- ${location_distance_bykm}.`;
         const empAttendanceData = {
             atten_date: indianTimeDate,
