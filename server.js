@@ -14,7 +14,7 @@ app.disable('x-powered-by'); // less hackers know about our stack
 
 // import middlewares
 const { verifyUser, verifyEmployee, verifyAdmin, verifySuperAdmin } = require("./middlewares/auth/index");
-const {notifyPunchInUsers} = require("./cron/index");
+const { notifyPunchInUsers } = require("./cron/index");
 
 // import routes
 const authRoute = require("./routes/auth");
@@ -31,14 +31,16 @@ app.use('/ats/api/employee', verifyEmployee, employeeRoute);
 
 
 
-
-
-cron.schedule('00 22 * * *', () => {
+// Schedule at the beginning of every hour 
+cron.schedule('00 * * * *', () => {
     notifyPunchInUsers();
 });
-// cron.schedule('30 6 * * *', () => {
+
+// cron.schedule('* * * * * *', () => {
 //     notifyPunchInUsers();
 // });
+
+
 
 
 const port = 3002 //process.env.eas1_backend_Port;

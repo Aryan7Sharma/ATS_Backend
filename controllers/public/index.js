@@ -24,14 +24,30 @@ const checkIn = async (req, res) => {
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
         const currentDate = new Date().toISOString().split('T')[0];
         const checkLastAttendance = await employeesattendanceModel.findOne({
-            where: {
-                [Sequelize.Op.and]: [
-                    { emp_id: employee.emp_id },
-                    Sequelize.literal(`DATE(atten_date) = '${currentDate}'`)
-                ]
-            }
+            // where: {
+            //     [Sequelize.Op.and]: [
+            //         { emp_id: employee.emp_id },
+
+            //         Sequelize.literal(`DATE(atten_date) = '${currentDate}'`)
+            //     ]
+            // }
+            where: { emp_id: employee.emp_id },
+            order: [['attendance_id', 'DESC']],
+            limit: 1,
         });
-        if (checkLastAttendance) { return res.status(422).json({ status: env.s422, msg: 'You are Already Punch-In for Today.' }) };
+        if (checkLastAttendance) {
+            if (!checkLastAttendance.check_out) {
+                return res.status(422).json({ status: env.s422, msg: "You didn't Punch Out Yet From You Last Attendance" })
+            };
+
+            let todayDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+            const twelveHours = moment.duration("12:00:00");
+            todayDate.subtract(twelveHours);
+            const lastPunchInTime = moment(checkLastAttendance.check_in, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+            if (todayDate < lastPunchInTime) {
+                return res.status(422).json({ status: env.s422, msg: 'You are Already Punch-In for Today.' })
+            }
+        }
         const remark = location_distance_bykm > 1000 ? `PunchIn Distance is Greater Than 1000 Meter -- ${location_distance_bykm}.` : `PunchIn Distance is Less Than 1000 Meter -- ${location_distance_bykm}.`;
         const empAttendanceData = {
             atten_date: indianTimeDate,
@@ -79,15 +95,24 @@ const checkOut = async (req, res) => {
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
         const currentDate = new Date().toISOString().split('T')[0];
         const checkLastAttendance = await employeesattendanceModel.findOne({
+            // where: {
+            //     [Sequelize.Op.and]: [
+            //         { emp_id: employee.emp_id },
+            //         Sequelize.literal(`DATE(atten_date) = '${currentDate}'`)
+            //     ]
+            // }
             where: {
-                [Sequelize.Op.and]: [
-                    { emp_id: employee.emp_id },
-                    Sequelize.literal(`DATE(atten_date) = '${currentDate}'`)
-                ]
-            }
-        })
+                emp_id: employee.emp_id,
+                check_out: {
+                    [Op.ne]: null,
+                },
+            },
+            order: [['attendance_id', 'DESC']],
+            limit: 1,
+
+        });
         if (!checkLastAttendance) { return res.status(422).json({ status: env.s422, msg: "You didn't Punch-In Yet For Today." }) };
-        if (checkLastAttendance.check_out) { return res.status(422).json({ status: env.s422, msg: "You Already Punch-Out For Today." }) };
+        //if (checkLastAttendance.check_out) { return res.status(422).json({ status: env.s422, msg: "You Already Punch-Out For Today." }) };
         const remark = location_distance_bykm > 1000 ? `PunchOut Distance is Greater Than 1000 Meter -- ${location_distance_bykm}. ` : `PunchOut Distance is Less Than 1000 Meter -- ${location_distance_bykm}.`;
         checkLastAttendance.check_out = indianTimeDate;
         checkLastAttendance.check_out_loc_dis_inmeter = parseInt(location_distance_bykm);
