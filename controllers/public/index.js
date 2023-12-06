@@ -104,7 +104,7 @@ const checkOut = async (req, res) => {
             where: {
                 emp_id: employee.emp_id,
                 check_out: {
-                    [Op.eq]: null,
+                    [Sequelize.Op.eq]: null,
                 },
             },
             order: [['attendance_id', 'DESC']],
@@ -143,6 +143,7 @@ const checkOut = async (req, res) => {
         }
         return res.status(200).send({ status: env.s200, msg: "You PunchOut Successfully!", data: [] });
     } catch (error) {
+        console.log("err", error);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
