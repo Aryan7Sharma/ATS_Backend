@@ -73,10 +73,11 @@ const checkOut = async (req, res) => {
         const indianTimeDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
         const { site_location_id, location_distance_bykm, attendance_id } = req.body;
         const user_login = req.user;
-        const empAttendanceData = await employeesattendanceModel.findByPk(attendance_id);
-        if (!empAttendanceData) { return res.status(404).json({ status: env.s404, msg: 'Your PunchIn Details Does Not Exist!' }) };
+        //const empAttendanceData = await employeesattendanceModel.findByPk(attendance_id);
+        //if (!empAttendanceData) { return res.status(404).json({ status: env.s404, msg: 'Your PunchIn Details Does Not Exist!' }) };
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
+        const currentDate = new Date().toISOString().split('T')[0];
         const checkLastAttendance = await employeesattendanceModel.findOne({
             where: {
                 [Sequelize.Op.and]: [
@@ -88,18 +89,18 @@ const checkOut = async (req, res) => {
         if (!checkLastAttendance) { return res.status(422).json({ status: env.s422, msg: "You didn't Punch-In Yet For Today." }) };
         if (checkLastAttendance.check_out) { return res.status(422).json({ status: env.s422, msg: "You Already Punch-Out For Today." }) };
         const remark = location_distance_bykm > 1000 ? `PunchOut Distance is Greater Than 1000 Meter -- ${location_distance_bykm}. ` : `PunchOut Distance is Less Than 1000 Meter -- ${location_distance_bykm}.`;
-        empAttendanceData.check_out = indianTimeDate;
-        empAttendanceData.check_out_loc_dis_inmeter = parseInt(location_distance_bykm);
-        empAttendanceData.remark = remark;
-        empAttendanceData.check_out_site_location_id = site_location_id;
-        empAttendanceData.check_out_remark = remark;
-        await empAttendanceData.save();
-        const empAttenSummary = await empAttenSummaryModel.findOne({
-            where: {
-                atten_date: indianTimeDate,
-                emp_id: employee.emp_id,
-            }
-        })
+        checkLastAttendance.check_out = indianTimeDate;
+        checkLastAttendance.check_out_loc_dis_inmeter = parseInt(location_distance_bykm);
+        checkLastAttendance.remark = remark;
+        checkLastAttendance.check_out_site_location_id = site_location_id;
+        checkLastAttendance.check_out_remark = remark;
+        await checkLastAttendance.save();
+        const empAttenSummary = null;//await empAttenSummaryModel.findOne({
+        //     where: {
+        //         atten_date: indianTimeDate,
+        //         emp_id: employee.emp_id,
+        //     }
+        // })
         if (empAttenSummary) {
             const lastCheckIn = await empAttenSummary.last_check_in;
             const currentTime = indianTimeDate;

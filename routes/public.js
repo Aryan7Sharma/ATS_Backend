@@ -17,7 +17,7 @@ router.post('/punchIn',
 );
 router.post('/punchOut',
     [
-        check('attendance_id').exists().isNumeric().withMessage('Invalid Attendance ID.'),
+        //check('attendance_id').exists().isNumeric().withMessage('Invalid Attendance ID.'),
         check('site_location_id').exists().isNumeric().withMessage('Invalid site_location_id'),
         check('location_distance_bykm').exists().isNumeric().withMessage('Invalid location_distance_bykm'),
     ], validateBody,
