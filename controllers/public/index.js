@@ -104,7 +104,7 @@ const checkOut = async (req, res) => {
             where: {
                 emp_id: employee.emp_id,
                 check_out: {
-                    [Op.ne]: null,
+                    [Op.eq]: null,
                 },
             },
             order: [['attendance_id', 'DESC']],
