@@ -262,7 +262,7 @@ const markAbsence = async (req, res) => {
 const getEmps = async (req, res) => {
     try {
         const { user_role, dept_id } = req.body;
-        if (user_role === 1) {
+        if (user_role === 0 || user_role === 1) {
             const empData = await employeesModel.findAll({
                 where: {
                     emp_type: {
