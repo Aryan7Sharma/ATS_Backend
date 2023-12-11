@@ -268,22 +268,16 @@ const markAbsence = async (req, res) => {
             return res.status(422).json({ status: env.s422, msg: "You already marked an Absence for today." });
         };
         const checkLastAttendance = await employeesattendanceModel.findOne({
-            where: { emp_id: employee.emp_id },
-            order: [['attendance_id', 'DESC']],
-            limit: 1,
+            where: {
+                [Sequelize.Op.and]: [
+                    { emp_id: employee.emp_id },
+
+                    Sequelize.literal(`DATE(atten_date) = '${currentDate}'`)
+                ]
+            }
         });
         if (checkLastAttendance) {
-            if (!checkLastAttendance.check_out) {
-                return res.status(422).json({ status: env.s422, msg: "You didn't Punch Out Yet From You Last Attendance" })
-            };
-
-            let todayDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
-            const twelveHours = moment.duration("12:00:00");
-            todayDate.subtract(twelveHours);
-            const lastPunchInTime = moment(checkLastAttendance.check_in, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
-            if (todayDate < lastPunchInTime) {
-                return res.status(422).json({ status: env.s422, msg: 'You Can Mark Your Absense Only After 12 Hours of Your Last Punch-In.' })
-            }
+            return res.status(422).json({ status: env.s422, msg: 'Your Marked Your Presence for today, so can not Mark Absence for today.' })
         }
         const leaveData = {
             emp_id: employee.emp_id,
