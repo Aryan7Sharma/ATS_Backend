@@ -23,6 +23,20 @@ const checkIn = async (req, res) => {
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
         const currentDate = new Date().toISOString().split('T')[0];
+        const checkAbsence = await empLeavesModel.findOne({
+            where: { emp_id: employee.emp_id },
+            order: [['leave_id', 'DESC']],
+            limit: 1,
+        });
+        if (checkAbsence) {
+            let todayDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+            const twentyFourHours = moment.duration("24:00:00");
+            todayDate.subtract(twentyFourHours);
+            const lastleaveDate = moment(checkAbsence?.leave_date, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+            if (todayDate < lastleaveDate) {
+                return res.status(422).json({ status: env.s422, msg: "You Can't Punch-In because you marked an Absence for today." });
+            }
+        };
         const checkLastAttendance = await employeesattendanceModel.findOne({
             // where: {
             //     [Sequelize.Op.and]: [
@@ -95,12 +109,6 @@ const checkOut = async (req, res) => {
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
         const currentDate = new Date().toISOString().split('T')[0];
         const checkLastAttendance = await employeesattendanceModel.findOne({
-            // where: {
-            //     [Sequelize.Op.and]: [
-            //         { emp_id: employee.emp_id },
-            //         Sequelize.literal(`DATE(atten_date) = '${currentDate}'`)
-            //     ]
-            // }
             where: {
                 emp_id: employee.emp_id,
                 check_out: {
@@ -111,7 +119,7 @@ const checkOut = async (req, res) => {
             limit: 1,
 
         });
-        if (!checkLastAttendance) { return res.status(422).json({ status: env.s422, msg: "You didn't Punch-In Yet For Today." }) };
+        if (!checkLastAttendance) { return res.status(422).json({ status: env.s422, msg: "You didn't Punch-In Yet." }) };
         //if (checkLastAttendance.check_out) { return res.status(422).json({ status: env.s422, msg: "You Already Punch-Out For Today." }) };
         const remark = location_distance_bykm > 1000 ? `PunchOut Distance is Greater Than 1000 Meter -- ${location_distance_bykm}. ` : `PunchOut Distance is Less Than 1000 Meter -- ${location_distance_bykm}.`;
         checkLastAttendance.check_out = indianTimeDate;
@@ -245,11 +253,43 @@ const getAllDept = async (req, res) => {
 const markAbsence = async (req, res) => {
     try {
         const { leave_reason } = req.body;
-        const user = req.user;
-        const emp = await employeesModel.findOne({ where: { emp_emailid: user.user_id } });
-        if (!emp) { return res.status(404).json({ status: env.s404, msg: 'Employee Record Not Found!' }) };
+        const user_login = req.user;
+        const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
+        if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
+        const checkAbsence = await empLeavesModel.findOne({
+            where: { emp_id: employee.emp_id },
+            order: [['leave_id', 'DESC']],
+            limit: 1,
+        });
+        if (checkAbsence) {
+            let todayDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+            const twentyFourHours = moment.duration("24:00:00");
+            todayDate.subtract(twentyFourHours);
+            const lastleaveDate = moment(checkAbsence?.leave_date, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+            if (todayDate < lastleaveDate) {
+                return res.status(422).json({ status: env.s422, msg: "You already marked Your Absence for today." });
+            }
+        };
+        const checkLastAttendance = await employeesattendanceModel.findOne({
+            where: { emp_id: employee.emp_id },
+            order: [['attendance_id', 'DESC']],
+            limit: 1,
+        });
+        if (checkLastAttendance) {
+            if (!checkLastAttendance.check_out) {
+                return res.status(422).json({ status: env.s422, msg: "You didn't Punch Out Yet From You Last Attendance" })
+            };
+
+            let todayDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+            const twelveHours = moment.duration("12:00:00");
+            todayDate.subtract(twelveHours);
+            const lastPunchInTime = moment(checkLastAttendance.check_in, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
+            if (todayDate < lastPunchInTime) {
+                return res.status(422).json({ status: env.s422, msg: 'You Can Mark Your Absense Only After 12 Hours of Your Last Punch-In.' })
+            }
+        }
         const leaveData = {
-            emp_id: emp.emp_id,
+            emp_id: employee.emp_id,
             leave_date: currentTimeIST,
             leave_reason: leave_reason || 'NA'
         }
