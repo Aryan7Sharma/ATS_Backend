@@ -254,6 +254,7 @@ const markAbsence = async (req, res) => {
         const user_login = req.user;
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
+        const currentDate = new Date().toISOString().split('T')[0];
         const checkAbsence = await empLeavesModel.findOne({
             where: {
                 [Sequelize.Op.and]: [
