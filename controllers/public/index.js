@@ -24,18 +24,16 @@ const checkIn = async (req, res) => {
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
         const currentDate = new Date().toISOString().split('T')[0];
         const checkAbsence = await empLeavesModel.findOne({
-            where: { emp_id: employee.emp_id },
-            order: [['leave_id', 'DESC']],
-            limit: 1,
+            where: {
+                [Sequelize.Op.and]: [
+                    { emp_id: employee.emp_id },
+
+                    Sequelize.literal(`DATE(leave_date) = '${currentDate}'`)
+                ]
+            }
         });
         if (checkAbsence) {
-            let todayDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
-            const twentyFourHours = moment.duration("24:00:00");
-            todayDate.subtract(twentyFourHours);
-            const lastleaveDate = moment(checkAbsence?.leave_date, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
-            if (todayDate < lastleaveDate) {
-                return res.status(422).json({ status: env.s422, msg: "You Can't Punch-In because you marked an Absence for today." });
-            }
+            return res.status(422).json({ status: env.s422, msg: "You Can't Punch-In because you marked an Absence for today." });
         };
         const checkLastAttendance = await employeesattendanceModel.findOne({
             // where: {
@@ -257,18 +255,16 @@ const markAbsence = async (req, res) => {
         const employee = await employeesModel.findOne({ where: { emp_emailid: user_login?.user_id } })
         if (!employee || employee?.emp_status !== 1) { return res.status(404).json({ status: env.s404, msg: 'Employee Not Found or Its Blocked by Adminstraction!' }) };
         const checkAbsence = await empLeavesModel.findOne({
-            where: { emp_id: employee.emp_id },
-            order: [['leave_id', 'DESC']],
-            limit: 1,
+            where: {
+                [Sequelize.Op.and]: [
+                    { emp_id: employee.emp_id },
+
+                    Sequelize.literal(`DATE(leave_date) = '${currentDate}'`)
+                ]
+            }
         });
         if (checkAbsence) {
-            let todayDate = moment(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
-            const twentyFourHours = moment.duration("24:00:00");
-            todayDate.subtract(twentyFourHours);
-            const lastleaveDate = moment(checkAbsence?.leave_date, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
-            if (todayDate < lastleaveDate) {
-                return res.status(422).json({ status: env.s422, msg: "You already marked Your Absence for today." });
-            }
+            return res.status(422).json({ status: env.s422, msg: "You already marked an Absence for today." });
         };
         const checkLastAttendance = await employeesattendanceModel.findOne({
             where: { emp_id: employee.emp_id },
