@@ -62,7 +62,7 @@ const sendPunchOutNotifyEmail = async (recipient) => {
         text:
             `Dear ${recipient?.emp_name},
 
-You haven't punched out for ${new Date().toLocaleDateString()}. Please do so, or the system will automatically punch you out at 12 AM.
+You haven't punched out for today, Please do so.
         
 
 Thanks & Best Regards,

@@ -277,7 +277,7 @@ const markAbsence = async (req, res) => {
             }
         });
         if (checkLastAttendance) {
-            return res.status(422).json({ status: env.s422, msg: 'Your Marked Your Presence for today, so can not Mark Absence for today.' })
+            return res.status(422).json({ status: env.s422, msg: 'You marked an attendance today. Consequently, marking absence for the same day is not permitted.' })
         }
         const leaveData = {
             emp_id: employee.emp_id,
