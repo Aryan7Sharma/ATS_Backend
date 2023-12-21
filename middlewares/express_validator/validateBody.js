@@ -5,7 +5,7 @@ const validateBody = async (req, res, next) => {
   const errors = await validationResult(req);
   //console.log("inside validate body");
   if (!errors.isEmpty()) {
-    logger.error(`Error in Req Body Validation ${errors.array()}`);
+    logger.error(`Error in Req Body Validation ${JSON.stringify(errors.array())}`);
     return res.status(422).json(errors.array());
   } else {
     next();
