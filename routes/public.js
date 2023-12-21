@@ -48,8 +48,8 @@ router.post("/getempattendata",
 
 router.post("/addnewsite",
     [
-        check('latitude').exists().withMessage('Latitude is required').custom(isValidLatitude).withMessage('Invalid Latitude'),
-        check('longitude').exists().withMessage('Longitude is required').custom(isValidLongitude).withMessage('Invalid Longitude'),
+        check('latitude').exists().withMessage('Latitude is required'),//.custom(isValidLatitude).withMessage('Invalid Latitude'),
+        check('longitude').exists().withMessage('Longitude is required'),//.custom(isValidLongitude).withMessage('Invalid Longitude'),
         check('location_name').exists().isLength({ min: 2, max: 256 }).withMessage('Invalid Site/Location Name'),
     ], validateBody, publicmainController.createSite);
 module.exports = router;
