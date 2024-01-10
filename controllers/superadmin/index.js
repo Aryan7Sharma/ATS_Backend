@@ -3,7 +3,7 @@ const logger = require('../../config/app_logger');
 const Sequelize = require('sequelize');
 const sequelize = require('../../config/db_connection');
 // import Models;
-const { employeesModel, employeesattendanceModel, empLeavesModel, empAttenSummaryModel, loginsModel, siteslocationModel } = require('../../models/index');
+const { employeesModel, employeesattendanceModel, empLeavesModel, empAttenSummaryModel, loginsModel, siteslocationModel, workingDaysModel } = require('../../models/index');
 // import utils func
 const { hashPassword } = require("../../utils/index");
 
@@ -79,7 +79,7 @@ const createEmployee = async (req, res) => {
 const createSite = async (req, res) => {
     try {
         const user = req.user;
-        const { latitude, longitude, location_name,location_alias } = req.body;
+        const { latitude, longitude, location_name, location_alias } = req.body;
         const lat = parseFloat(latitude);
         const long = parseFloat(longitude);
         const siteData = {
@@ -88,7 +88,7 @@ const createSite = async (req, res) => {
             location_name: location_name,
             creater_id: user?.user_id,
             creation_date: new Date(),
-            location_alias:location_alias || 'NA',
+            location_alias: location_alias || 'NA',
         }
         const newSite = await siteslocationModel.create(siteData);
         return res.status(201).send({ status: env.s201, msg: "New Site Created Successfully", data: newSite });
@@ -205,6 +205,64 @@ const getAttendanceData = async (req, res) => {
     }
 }
 
+const updateSiteStatus = async (req, res) => {
+    try {
+        const { location_id } = req.body;
+        if (!location_id) { return res.status(404).send({ status: env.s404, msg: "Invalid Site/Location!" }); }
+        const site = await siteslocationModel.findByPk(location_id);
+        if (!site) { return res.status(404).send({ status: env.s404, msg: "Site/Location not found." }); }
+        if (site.active_status == 0) {
+            site.active_status = 1;
+        } else {
+            site.active_status = 0;
+        }
+        site.save();
+        return res.status(200).send({ status: env.s200, msg: "Site/Location Status Updated Successfully" });
+    } catch (error) {
+        logger.error(`server error inside updateSiteStatus controller${error}`);
+    }
+}
+
+
+
+
+// workingDays 
+const getCurrYearWorkingDays = async (req, res) => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    try {
+        const allWorkingDays = await workingDaysModel.findAll({
+            where: {
+                year: currentYear
+            },
+            attributes: ["year", "month", "working_days"],
+        });
+        return res.status(200).send({ status: env.s200, msg: `All Working Days of ${currentYear} Successfully`, data: allWorkingDays });
+    } catch (error) {
+        logger.error(`server error inside getCurrYearWorkingDays controller${error}`);
+        return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
+    }
+};
+
+const updateWorkingDays = async (req, res) => {
+    const { month, workingDays } = req.body;
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const id = parseInt(currentYear.toString() + month.toString());
+    try {
+        const workingDaysData = await workingDaysModel.findByPk(id, {
+            order: [['id', 'ASC']],
+        });
+        if (!workingDaysData) { return res.status(404).send({ status: env.s404, msg: "Data not found." }); };
+        workingDaysData.working_days = workingDays;
+        await workingDaysData.save();
+        return res.status(200).send({ status: env.s200, msg: `Working Days Updated Successfully` });
+    } catch (error) {
+        logger.error(`server error inside updateWorkingDays controller${error}`);
+        return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
+    }
+}
+
 module.exports = {
     createEmployee,
     createSite,
@@ -212,5 +270,8 @@ module.exports = {
     updateEmployee,
     getAllSite,
     getAllEmp,
-    getAttendanceData
+    getAttendanceData,
+    updateSiteStatus,
+    getCurrYearWorkingDays,
+    updateWorkingDays
 }

@@ -23,7 +23,6 @@ const getEmpNotPunchedOut = async () => {
         const indianTimeDate = moment(currentDate, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
         const twelveHoursAgo = moment(currentDate, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
         const thirteenHoursAgo = moment(currentDate, 'YYYY-MM-DD HH:mm:ss.SSS').tz('Asia/Kolkata');
-        console.log("1", indianTimeDate);
         let twelveHours = moment.duration("12:00:00");
         let thirteenHours = moment.duration("13:00:00");
         //indianTimeDate.subtract(time);
@@ -50,14 +49,10 @@ const getEmpNotPunchedOut = async () => {
                 },
             },
         });
-
-        console.log("subquery", subquery, "check empNotPunchOutData", empNotPunchOutData);
         empData = empNotPunchOutData.map((employee) => {
             return { emp_emailid: employee.emp_emailid, emp_name: employee.emp_name }
         });
     } catch (err) {
-        console.log(err);
-
     } finally {
         return empData;
     }

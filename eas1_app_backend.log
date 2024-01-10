@@ -2,3 +2,49 @@
 {"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2023-12-11T08:30:46.914Z"}
 {"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2023-12-11T08:53:52.501Z"}
 {"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2023-12-11T08:56:58.578Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-08T13:24:17.702Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerTypeError: sequelize.query is not a function","timestamp":"2024-01-08T13:26:11.911Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-08T13:26:55.764Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerTypeError: sequelize.query is not a function","timestamp":"2024-01-08T13:26:59.651Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-08T13:27:20.379Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerTypeError: sequelize.query is not a function","timestamp":"2024-01-08T13:27:23.283Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-08T13:29:16.859Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerSequelizeDatabaseError: function get_employee_attendance_report(unknown, unknown) does not exist","timestamp":"2024-01-08T13:29:21.437Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-08T13:31:09.261Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-08T13:34:58.670Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-09T05:08:13.361Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerSequelizeDatabaseError: invalid input syntax for type timestamp with time zone: \"NA\"","timestamp":"2024-01-09T12:21:50.529Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerSequelizeDatabaseError: invalid input syntax for type timestamp with time zone: \"NA\"","timestamp":"2024-01-09T12:24:14.392Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerSequelizeDatabaseError: invalid input syntax for type timestamp with time zone: \"NA\"","timestamp":"2024-01-09T13:33:01.328Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerSequelizeDatabaseError: function to_char(timestamp with time zone) does not exist","timestamp":"2024-01-09T13:34:11.360Z"}
+{"level":"error","message":"server error inside getEmployeeAttendanceReport1 Report controllerSequelizeDatabaseError: column \"att.check_in\" must appear in the GROUP BY clause or be used in an aggregate function","timestamp":"2024-01-09T14:03:23.324Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T05:03:51.994Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T10:20:17.295Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T10:53:05.527Z"}
+{"level":"error","message":"server error inside getAllSite controllerSequelizeDatabaseError: column \"id\" does not exist","timestamp":"2024-01-10T10:53:09.858Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T10:53:38.738Z"}
+{"level":"error","message":"server error inside getAllSite controllerSequelizeDatabaseError: column \"id\" does not exist","timestamp":"2024-01-10T10:53:42.665Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T10:54:19.653Z"}
+{"level":"error","message":"server error inside getAllSite controllerSequelizeDatabaseError: column \"id\" does not exist","timestamp":"2024-01-10T10:54:25.087Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T10:58:43.678Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:02:49.145Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:03:53.341Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:04:38.462Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:05:15.146Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:06:22.260Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:06:47.033Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:08:28.871Z"}
+{"level":"error","message":"server error inside updateWorkingDays controllerError: You attempted to save an instance with no primary key, this is not allowed since it would result in a global update","timestamp":"2024-01-10T13:08:35.066Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:09:25.946Z"}
+{"level":"error","message":"server error inside updateWorkingDays controllerError: You attempted to save an instance with no primary key, this is not allowed since it would result in a global update","timestamp":"2024-01-10T13:09:31.228Z"}
+{"level":"error","message":"server error inside updateWorkingDays controllerError: You attempted to save an instance with no primary key, this is not allowed since it would result in a global update","timestamp":"2024-01-10T13:09:36.434Z"}
+{"level":"error","message":"server error inside updateWorkingDays controllerError: You attempted to save an instance with no primary key, this is not allowed since it would result in a global update","timestamp":"2024-01-10T13:11:54.059Z"}
+{"level":"error","message":"server error inside updateWorkingDays controllerError: You attempted to save an instance with no primary key, this is not allowed since it would result in a global update","timestamp":"2024-01-10T13:12:18.352Z"}
+{"level":"error","message":"server error inside updateWorkingDays controllerError: You attempted to save an instance with no primary key, this is not allowed since it would result in a global update","timestamp":"2024-01-10T13:43:45.337Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:43:53.725Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:45:24.174Z"}
+{"level":"error","message":"server error inside updateWorkingDays controllerSequelizeDatabaseError: column \"nan\" does not exist","timestamp":"2024-01-10T13:45:29.204Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:46:24.659Z"}
+{"level":"error","message":"server error inside updateWorkingDays controllerSequelizeDatabaseError: column \"nan\" does not exist","timestamp":"2024-01-10T13:46:32.302Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:47:27.175Z"}
+{"level":"info","message":"Server connected to ----> 3002 Port","timestamp":"2024-01-10T13:59:40.881Z"}

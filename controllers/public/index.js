@@ -92,6 +92,7 @@ const checkIn = async (req, res) => {
         const respData = { attendanceId: checkInData.attendance_id, site_location_id: checkInData.site_location_id, punchInDateTime: checkInData.check_in }
         return res.status(200).send({ status: env.s200, msg: "You PunchIn Successfully!", data: respData });
     } catch (error) {
+        logger.error(`server error inside checkIn controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };
@@ -149,7 +150,7 @@ const checkOut = async (req, res) => {
         }
         return res.status(200).send({ status: env.s200, msg: "You PunchOut Successfully!", data: [] });
     } catch (error) {
-        console.log("err", error);
+        logger.error(`server error inside checkOut controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error" });
     }
 };

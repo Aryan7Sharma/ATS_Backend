@@ -5,6 +5,7 @@ const employeesModel = require('./tbl_employees_details');
 const employeesattendanceModel = require('./tbl_employees_attendance');
 const empAttenSummaryModel = require('./tbl_employees_attendance_summary');
 const empLeavesModel = require('./tbl_employees_leaves');
+const workingDaysModel = require('./tbl_workingdays');
 
 
 module.exports = {
@@ -14,5 +15,6 @@ module.exports = {
     employeesModel,
     employeesattendanceModel,
     empAttenSummaryModel,
-    empLeavesModel
+    empLeavesModel,
+    workingDaysModel
 }
