@@ -3,6 +3,7 @@ const logger = require('../../config/app_logger');
 const { Sequelize } = require('sequelize');
 const sequelize = require('../../config/db_connection');
 const { getEmployeeAttendanceReport1Func } = require("../../models/custom_functions");
+const { workingDaysModel } = require('../../models/index');
 
 const getEmployeeAttendanceReport1 = async (req, res) => {
     try {
@@ -28,7 +29,18 @@ const getEmployeesConsolidatedAttendanceReport = async (req, res) => {
             type: Sequelize.QueryTypes.SELECT,
         });
         if (!getEmployeesAttendanceData) { return res.status(404).send({ status: env.s404, msg: "Employee Attendance Data Not Found", data: [] }); }
-        return res.status(200).send({ status: env.s200, msg: "Employee Attendance Data Fetched Successfully", data: getEmployeesAttendanceData });
+        let totalWorkingDays = 24;
+        const startDateLocale = new Date(start_date);
+        const currentYear = startDateLocale.getFullYear();
+        const currSelectedMonth = parseInt(startDateLocale.getMonth()) + 1;
+        const workingDays_id = parseInt(currentYear.toString() + currSelectedMonth.toString());
+        const workingDaysOfSelectedMonth = await workingDaysModel.findByPk(workingDays_id, {
+            order: [['id', 'ASC']],
+        });
+        if (workingDaysOfSelectedMonth) {
+            totalWorkingDays = workingDaysOfSelectedMonth.working_days
+        }
+        return res.status(200).send({ status: env.s200, msg: "Employee Attendance Data Fetched Successfully", data: getEmployeesAttendanceData, totalWorkingDays: totalWorkingDays });
     } catch (error) {
         logger.error(`server error inside getEmployeeAttendanceReport1 Report controller${error}`);
         return res.status(500).send({ status: env.s500, msg: "Internal Server Error", error: error });
